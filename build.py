@@ -47,6 +47,8 @@ staff = Weapon("Staff", attack, staff_spec, 70, 6, 5,
 "A staff that channels magic power.")
 mace = Weapon("Mace", attack, mace_spec, 80, 12, 3,
 "A blunt weapon favored by clerics.")
+fists = Weapon("Fists", attack, None, 85, 5, 0,
+"These are your hands.")
 
 
 class Accessory:

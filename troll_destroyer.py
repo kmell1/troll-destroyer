@@ -218,8 +218,9 @@ def character_confirm():
 character_selection()
 character_confirm()
 
-print(f"Thanks, {name}. You're all set. Here's a free weapon.")
-x.unequipped_weapons.append(mace)
+print(f"Thanks, {name}. You're all set. By the way, you can also fight with\
+just your fists, if you're into that kind of thing. Try changing to them now.")
+x.unequipped_weapons.append(fists)
 
 print("Received weapon: " + x.unequipped_weapons[-1].name)
 print("\nTry switching to it now:\n")
@@ -275,10 +276,9 @@ def change_weapon():
 
 
 change_weapon()
+print("Nice. Probably shouldn't just punch things though. Let's switch back to\
+a real weapon.")
+change_weapon()
 
-# i = 0
-# while i < len(x.unequipped_weapons):
-#     print(str(i + 1) + ". " + x.unequipped_weapons[i].name)
-#     i += 1
-# print(len(x.unequipped_weapons))
-# print(x.player.weapon.name)
+print("Great! Unfortunately there's nothing to fight yet. So I guess you win!")
+print("GAME OVER")
