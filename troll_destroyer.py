@@ -8,7 +8,8 @@ x.player = CharacterBuild(None, None, None, x.backpack)
 #these methods, collectively, make up the character creation process
 #provide summary of player's stats
 def print_stats():
-    print("\nYour class: " + x.player.stats.spread)
+    print("\n########### YOUR STATS ###########\n")
+    print("Your class: " + x.player.stats.spread)
     print("Current HP: " + str(x.player.stats.hp))
     print("Max HP: " + str(x.player.stats.hp))
     print("Toughness: " + str(x.player.stats.toughness))
@@ -19,7 +20,8 @@ def print_stats():
 
 #selects a starting stat spread
 def stat_select():
-    print("\nPlease select a starting stat spread:")
+    print("\n########### STAT SELECT ###########\n")
+    print("Please select a starting stat spread:\n")
     print("1. Warrior\n2. Rogue\n3. Wizard\n4. Cleric")
     choice = input(">  ")
 
@@ -48,6 +50,7 @@ def stat_select():
 
 #provides summary of currently equipped weapon
 def print_weapon():
+    print("\n########### EQUIPPED WEAPON ###########\n")
     print("\nCurrent weapon: " + x.player.weapon.name)
     print("Description: " + x.player.weapon.desc)
     print("Hit Rating: " + str(x.player.weapon.hit))
@@ -56,6 +59,7 @@ def print_weapon():
 
 #selects a starting weapon
 def weapon_select():
+    print("\n########### WEAPON SELECT###########\n")
     print("\nPlease select a starting weapon:")
     print("1. Sword\n2. Dagger\n3. Staff\n4. Mace")
     choice = input(">  ")
@@ -85,7 +89,8 @@ def weapon_select():
 
 #provides summary of current accessory (off hand item)
 def print_accessory():
-    print("\nCurrent accessory: " + x.player.accessory.name)
+    print("\n########### EQUIPPED ACCESSORY ###########\n")
+    print("Current accessory: " + x.player.accessory.name)
     print("Description: " + x.player.accessory.desc)
     print("Physical Hit Bonus: " + str(x.player.accessory.phys_hit_up))
     print("Physical Damage Bonus: " + str(x.player.accessory.phys_dmg_up))
@@ -95,7 +100,8 @@ def print_accessory():
 
 #selects a starting accessory
 def accessory_select():
-    print("\nPlease select a starting accessory:")
+    print("\n########### ACCESSORY SELECT ###########\n")
+    print("Please select a starting accessory:\n")
     print("1. Shield\n2. Spellbook\n3. Holy Symbol\n4. Poison Kit")
     choice = input(">  ")
 
@@ -127,7 +133,7 @@ def accessory_select():
 
 #shows player a rundown of the items in their inventory
 def print_backpack():
-    print("\n----INVENTORY----\n")
+    print("\n########### INVENTORY ###########\n")
     i = 0
     while i < len(x.backpack):
         print(str(i + 1) + ". " + x.backpack[i].name + " (" +
@@ -138,7 +144,7 @@ def print_backpack():
 #selects a starting piece of consumable equipment
 def consumable_select():
     print("\nSelect your starting consumable:")
-    print("1. Potion\n2. Bomb")
+    print("\n1. Potion\n2. Bomb")
     choice = input(">  ")
 
     if choice == "1":
@@ -161,6 +167,7 @@ def consumable_select():
 #finally, this method runs all the above in order, allowing for custom character
 #creation
 def character_creation():
+    print("########### CHARACTER CREATION ###########")
     stat_select()
     weapon_select()
     accessory_select()
@@ -169,6 +176,7 @@ def character_creation():
 
 #this shows a complete rundown of the player character's details
 def character_sheet():
+    print("\n########### CHARACTER SHEET ###########\n")
     print_stats()
     print_weapon()
     print_accessory()
@@ -176,6 +184,7 @@ def character_sheet():
 
 #this prompts the player to either select a preset or create their own character
 def character_selection():
+    print("\n############ CHARACTER SELECTION ###########\n")
     print("\nChoose a preset character, or create a custom character:")
     print("1. A warrior who fights with sword and shield.")
     print("2. A cleric who fights with a mace and holy symbol.")
@@ -247,6 +256,7 @@ print("\nTry switching to it now:\n")
 #to selection, and then removes selection from list
 
 def change_weapon():
+    print("\n########### WEAPON SELECT ###########\n")
     print("Currently equipped: " + x.player.weapon.name)
     print("Select the weapon you'd like to switch to:\n")
 
