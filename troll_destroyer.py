@@ -57,7 +57,7 @@ def print_weapon():
 #selects a starting weapon
 def weapon_select():
     print("\nPlease select a starting weapon:")
-    print("1. Sword\n2. Dagger\n3. Staff")
+    print("1. Sword\n2. Dagger\n3. Staff\n4. Mace")
     choice = input(">  ")
 
     if choice == "1":
@@ -96,7 +96,7 @@ def print_accessory():
 #selects a starting accessory
 def accessory_select():
     print("\nPlease select a starting accessory:")
-    print("1. Shield\n2. Spellbook\n3. Holy Symbol")
+    print("1. Shield\n2. Spellbook\n3. Holy Symbol\n4. Poison Kit")
     choice = input(">  ")
 
     if choice == "1":
@@ -105,6 +105,11 @@ def accessory_select():
         x.player.accessory = spellbook
     elif choice == "3":
         x.player.accessory = holy_symbol
+    elif choice == "4":
+        x.player.accessory = poison_kit
+    else:
+        print("Invalid input. Please try again.")
+        accessory_select()
 
     print("\n\nYou have selected: " + x.player.accessory.name)
     print_accessory()
@@ -116,6 +121,9 @@ def accessory_select():
         pass
     elif choice == "2":
         accessory_select()
+    else:
+        print("Invalid input. Please try again.")
+        accessory_select()
 
 #shows player a rundown of the items in their inventory
 def print_backpack():
@@ -126,10 +134,6 @@ def print_backpack():
         str(x.backpack[i].uses) + " uses remaining.)")
         print(x.backpack[i].desc)
         i += 1
-
-    # for item in x.backpack:
-    #     print(item.name + " (" + str(item.uses) + " uses remaining.)")
-    #     print(item.desc)
 
 #selects a starting piece of consumable equipment
 def consumable_select():
@@ -162,20 +166,15 @@ def character_creation():
     accessory_select()
     consumable_select()
 
+
+#this shows a complete rundown of the player character's details
 def character_sheet():
     print_stats()
     print_weapon()
     print_accessory()
     print_backpack()
 
-
-#now that that's out of the way, we can actually start the game. hooray!
-print("Welcome to troll destroyer.")
-print("What is your name?")
-name = input("> ")
-
-print(f"\n\nWelcome, {name}.")
-
+#this prompts the player to either select a preset or create their own character
 def character_selection():
     print("\nChoose a preset character, or create a custom character:")
     print("1. A warrior who fights with sword and shield.")
@@ -189,20 +188,27 @@ def character_selection():
     if choice == "1":
         x.player = CharacterBuild(warrior, sword, shield,
         x.backpack.append(potion))
+        character_confirm()
     elif choice == "2":
         x.player = CharacterBuild(cleric, mace, holy_symbol,
         x.backpack.append(bomb))
+        character_confirm()
     elif choice == "3":
         x.player = CharacterBuild(wizard, staff, spellbook,
         x.backpack.append(potion))
+        character_confirm()
     elif choice == "4":
         x.player = CharacterBuild(rogue, dagger, poison_kit,
         x.backpack.append(bomb))
+        character_confirm()
     elif choice == "0":
         character_creation()
+        character_confirm()
     else:
         print("I'm not sure what to do with this. Come back when you're ready.")
 
+#used in character_selection() to print a summary of the player's character,
+#sending them back to the start if they say no
 def character_confirm():
     print("Here's a summary of your character:")
     character_sheet()
@@ -211,14 +217,25 @@ def character_confirm():
 
     if choice == "1":
         pass
-    else:
+    elif choice == "2":
         x.backpack = []
         character_selection()
+    else:
+        print("Invalid input. Please try again.")
+        character_confirm()
+
+
+
+#now that that's out of the way, we can actually start the game. hooray!
+print("Welcome to troll destroyer.")
+print("What is your name?")
+name = input("> ")
+
+print(f"\n\nWelcome, {name}.")
 
 character_selection()
-character_confirm()
 
-print(f"Thanks, {name}. You're all set. By the way, you can also fight with\
+print(f"Thanks, {name}. You're all set. By the way, you can also fight with \
 just your fists, if you're into that kind of thing. Try changing to them now.")
 x.unequipped_weapons.append(fists)
 
@@ -276,7 +293,7 @@ def change_weapon():
 
 
 change_weapon()
-print("Nice. Probably shouldn't just punch things though. Let's switch back to\
+print("Nice. Probably shouldn't just punch things though. Let's switch back to \
 a real weapon.")
 change_weapon()
 
