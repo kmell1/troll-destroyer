@@ -1,5 +1,7 @@
 import cfg as x
 from build import *
+from menus import *
+from encounters import *
 
 #creates an empty class instance in cfg.py that will be used for basically
 #every action the player makes in the game
@@ -141,6 +143,39 @@ def print_backpack():
         print(x.backpack[i].desc)
         i += 1
 
+#uses above method to print item inventory, prompts for a selection, and then
+#uses said item
+def use_consumable():
+    print_backpack()
+    print("\n")
+    print("Select an item to use, or press 0 to return to the previous screen.")
+    choice = input(">  ")
+
+    if int(choice) > 0 and int(choice) <= len(x.backpack):
+        print("\nYou have selected: " + x.backpack[int(choice) - 1].name)
+        print("\nWould you like to use this item?\n1.Yes\n2.No")
+        confirm = input(">  ")
+
+        if confirm == "1":
+            if x.backpack[int(choice) - 1].uses > 0:
+                x.backpack[int(choice) - 1].uses -= 1
+                x.backpack[int(choice) - 1].item_method()
+                print("\nYou have " + str(x.backpack[int(choice) - 1].uses) +
+                " uses remaining of " + str(x.backpack[int(choice) - 1].name))
+            else:
+                print("\nYou don't have any more uses of that item.")
+                use_consumable()
+        else:
+            print("Invalid selection. Please try again.")
+            use_consumable()
+    elif choice == "0":
+        pass
+    else:
+        print("Invalid input. Please try again.")
+        use_consumable()
+
+
+
 #selects a starting piece of consumable equipment
 def consumable_select():
     print("\nSelect your starting consumable:")
@@ -185,14 +220,14 @@ def character_sheet():
 #this prompts the player to either select a preset or create their own character
 def character_selection():
     print("\n############ CHARACTER SELECTION ###########\n")
-    print("\nChoose a preset character, or create a custom character:")
-    print("1. A warrior who fights with sword and shield.")
-    print("2. A cleric who fights with a mace and holy symbol.")
-    print("3. A wizard who slings spells with a staff and spellbook.")
-    print("4. A rogue who fights with a dagger and poisons.")
-    print("0. Enter Character Creation")
+    print("\nChoose a preset character, or create a custom character:\n")
+    print("1. A warrior who fights with sword and shield.\n")
+    print("2. A cleric who fights with a mace and holy symbol.\n")
+    print("3. A wizard who slings spells with a staff and spellbook.\n")
+    print("4. A rogue who fights with a dagger and poisons.\n")
+    print("0. Enter Character Creation\n")
 
-    choice = input(">  ")
+    choice = input(">  \n")
 
     if choice == "1":
         x.player = CharacterBuild(warrior, sword, shield,
@@ -240,16 +275,17 @@ print("Welcome to troll destroyer.")
 print("What is your name?")
 name = input("> ")
 
-print(f"\n\nWelcome, {name}.")
+x.player_name = name
+
+print(f"\n\nWelcome, {x.player_name}.")
 
 character_selection()
 
-print(f"Thanks, {name}. You're all set. By the way, you can also fight with \
-just your fists, if you're into that kind of thing. Try changing to them now.")
+print(f"\nThanks, {x.player_name}. You're all set. By the way, you can also fight with \
+just your fists, if you're into that kind of thing.\n")
 x.unequipped_weapons.append(fists)
 
 print("Received weapon: " + x.unequipped_weapons[-1].name)
-print("\nTry switching to it now:\n")
 
 #prints x.unequipped_weapons in numbered list, asks for input, and if new weapon
 #is chosen, adds current weapon to x.unequipped_weapons, changes current weapon
@@ -268,14 +304,16 @@ def change_weapon():
         i += 1
     #they also have the option to back out of the menu
     print("0. Nevermind.")
-    choice = input(">  ")
+    choice = input(">  \n")
 
     #player types the number corresponding to the item they want, that gets
     #turned into an int. if it's in the list, it keeps going
     if int(choice) > 0 and int(choice) <= len(x.unequipped_weapons):
         #tell them which item they chose from the menu and confirm the switch
         print("You have selected " + x.unequipped_weapons[int(choice) - 1].name)
-        print("Unequip " + x.player.weapon.name + "?\n1.Yes\n2.No")
+        print(x.unequipped_weapons[int(choice) - 1])
+        print("Unequip " + x.player.weapon.name + " and equip " +
+        x.unequipped_weapons[int(choice) - 1].name + "?\n1.Yes\n2.No")
         confirm = input(">  ")
         #if they confirm the switch...
         if confirm == "1":
@@ -302,10 +340,77 @@ def change_weapon():
         change_weapon()
 
 
-change_weapon()
-print("Nice. Probably shouldn't just punch things though. Let's switch back to \
-a real weapon.")
-change_weapon()
+#this is the menu that players will see after character creation, and outside
+#of encounters
 
-print("Great! Unfortunately there's nothing to fight yet. So I guess you win!")
-print("GAME OVER")
+def health_bar(life, max):
+    print(("█" * life) + ("-" * (max - life)))
+    return None
+
+def main_menu():
+    print("\n########### MAIN MENU ###########\n")
+    print(x.player_name)
+    health_bar(int(x.player.stats.hp), int(x.player.stats.max_hp))
+    print("You currently have " + str(x.player.stats.hp) + "/" +
+    str(x.player.stats.max_hp) + "HP.")
+
+    print("You have: " + str(x.gold) + " gold.")
+    print("You have killed " + str(x.trolls_killed) + " trolls.\n")
+    print("What would you like to do next?\n")
+    print("1. Next encounter.")
+    print("2. View my inventory.")
+    print("3. Change my weapon.")
+    print("4. View my stats.")
+    print("5. Punch yourself in the head.")
+    print("0. Die on purpose.")
+
+    choice = input(">  ")
+
+    if choice == "1":
+        #the idea right now is for another method, encounter(), to keep track
+        #of the players progress. i envision three main kinds of encounter
+        # 1. Fights with trolls (obviously)
+        # 2. Visiting a merchant (maybe every 5th encounter?)
+        # 3. Boss fights (probably every 10th encounter)
+        # each of these is likely to require its own method. the method in this
+        # option will move the player to the appropriate encounter method
+        next_encounter()
+    elif choice == "2":
+        #going to have to make another method that uses items. i'm thinking it
+        #needs to be separate from the print_backpack() method to avoid players
+        #using items in character creation. maybe this new method starts by
+        #printing the backpack. that probably makes more sense
+        use_consumable()
+        main_menu()
+    elif choice == "3":
+        #i think this is already working as intended. players will also need to
+        #be able to do this in combat, but in combat this action incurs an
+        #opportunity cost of being attacked. outside of encounters, this move
+        #is free
+        change_weapon()
+        main_menu()
+    elif choice == "4":
+        character_sheet()
+        print("Press any button to return to main menu")
+        choice = input(">  ")
+        main_menu()
+    elif choice == "5":
+        x.player.stats.hp -= 5
+        print("\n\nWell that hurt.")
+        main_menu()
+    elif choice == "0":
+        print("\nWhat? really?")
+        print("\n1. Yes\n\n2. Just kidding.")
+        confirm = input(">  ")
+        if confirm == "1":
+            print("Oh. Damn, ok. You died. Bye.")
+            exit()
+        else:
+            print("Whew. Okay. You had me worried for a second.")
+            main_menu()
+    else:
+        print("Invalid input. Please try again.")
+        main_menu()
+
+
+main_menu()

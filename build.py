@@ -70,13 +70,14 @@ poison_kit = Accessory("Poison Kit", poisons, 4, 4, 0, 0, 0,
 "A collection of foul poisons, favored by underhanded combatants.")
 
 class Consumable:
-  def __init__(consumable, name, hp, phys_hit_up, dmg, uses, desc):
+  def __init__(consumable, name, hp, phys_hit_up, dmg, uses, item_method, desc):
     consumable.name = name
     consumable.hp = hp
     consumable.phys_hit_up = phys_hit_up
     consumable.dmg = dmg
     consumable.uses = uses
+    consumable.item_method = item_method
     consumable.desc = desc
 
-potion = Consumable("Potion", 25, 0, 0, 3, "A healing potion.")
-bomb = Consumable("Bomb", 0, 0, 35, 3, "Throw this at a bad guy.")
+potion = Consumable("Potion", 25, 0, 0, 3, use_potion, "A healing potion.")
+bomb = Consumable("Bomb", 0, 0, 35, 3, use_bomb, "Throw this at a bad guy.")
